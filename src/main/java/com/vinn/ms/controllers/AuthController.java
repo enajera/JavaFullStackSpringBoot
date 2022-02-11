@@ -2,6 +2,7 @@ package com.vinn.ms.controllers;
 
 import com.vinn.ms.dao.UsuarioDao;
 import com.vinn.ms.models.Usuario;
+import com.vinn.ms.utils.JWTUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,12 +15,18 @@ public class AuthController {
 
     @Autowired
     private UsuarioDao usuarioDao;
+
+    @Autowired
+    private JWTUtil jwtUtil;
     
     
     @RequestMapping(value = "api/login",method = RequestMethod.POST)
     public String login(@RequestBody Usuario usuario){
-         if(usuarioDao.verificarCredenciales(usuario)){
-           return "OK";
+
+      Usuario usrLogin = usuarioDao.obtenerUsuario(usuario);
+         if(usrLogin!=null){
+           String token = jwtUtil.create(String.valueOf(usrLogin.getId()), usrLogin.getEmail());
+           return token;
          }else{
              return "FAIL";
          }
