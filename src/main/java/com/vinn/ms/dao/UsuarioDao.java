@@ -4,8 +4,13 @@ import java.util.List;
 
 import com.vinn.ms.models.Usuario;
 
+public interface UsuarioDao {
 
-public interface UsuarioDao{
+    public List<Usuario> getUsuario();
 
-	List<Usuario> getUsuario();
+    public void eliminar(Long id);
+
+    public void registrar(Usuario usuario);
+
+    public boolean verificarCredenciales(Usuario usuario);
 }
